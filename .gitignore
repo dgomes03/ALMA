@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Your documents, the language model and the indexes built from them. The empty
+# documents/ and model/ folders are kept (via .gitkeep) so they exist in a fresh clone.
+documents/*
+!documents/.gitkeep
+model/*
+!model/.gitkeep
+Indexes/
+Indexes_*/
+User_indexes/
+
+# Saved chats (JSON + KV-cache) and terminal input history
+.chat_history
+server/chats/*
+!server/chats/.gitkeep
+
+# Benchmark and evaluation outputs (datasets are downloaded on demand)
+benchmark/datasets/
+benchmark/results/
+benchmark/figures/
+benchmark/tables/
+evaluation/results/
+evaluation/Visualizations/*.png
+
+# Secrets
+.env
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.code-workspace
+.claude/

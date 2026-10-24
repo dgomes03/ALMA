@@ -1,0 +1,11 @@
+# Extra packages for benchmark/, evaluation/ and tests/. Not needed to run the app.
+-r requirements.txt
+anthropic             # Claude as the RAGAS judge (evaluation/, score_transcript.py)
+datasets              # RAGAS benchmark datasets (evaluation/)
+huggingface-hub       # JurisTCU download (benchmark/beir_data.py)
+matplotlib            # figures (benchmark/plot_*.py)
+psutil                # process memory stats (benchmark/run_benchmark.py)
+pydantic              # RAGAS LLM wrappers (evaluation/)
+pytest
+ragas
+rouge-score           # lexical eval metrics (evaluation/)

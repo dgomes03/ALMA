@@ -1,0 +1,33 @@
+beautifulsoup4
+bm25s
+faiss-cpu
+flask
+flask-cors
+flask-socketio
+json-repair
+lxml
+markdown
+mlx-lm ; sys_platform == "darwin" and platform_machine == "arm64"
+nltk
+numpy
+openpyxl
+Pillow
+pymupdf
+pytesseract
+python-docx
+python-pptx
+PyStemmer
+requests
+scikit-learn
+sentence-transformers
+syntok
+textual
+torch
+trafilatura
+tqdm
+ddgs
+unstructured[pdf,docx,pptx,xlsx]
+
+# Optional SQL backends (SQLite needs nothing extra):
+#   pip install psycopg2-binary          # PostgreSQL
+#   pip install mysql-connector-python   # MySQL

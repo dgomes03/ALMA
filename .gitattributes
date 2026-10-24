@@ -1,0 +1,6 @@
+# Keep line endings right for each platform's scripts, whatever core.autocrlf says.
+* text=auto
+*.sh  text eol=lf
+*.bat text eol=crlf
+*.db  binary
+*.command text eol=lf
