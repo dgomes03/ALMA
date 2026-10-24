@@ -18,39 +18,48 @@ echo   ALMA - Windows setup
 echo ============================================================
 echo(
 
-REM --- 1. Check Python is installed -----------------------------
-where python >nul 2>&1
-if errorlevel 1 (
-    echo [ERROR] Python was not found on this PC.
+REM --- 1. Find a supported Python (3.10 to 3.13) ----------------
+REM  The "py" launcher finds every installed version, so a newer
+REM  Python (or the Microsoft Store placeholder) earlier on PATH
+REM  does not get in the way.
+set "PY="
+for %%V in (3.13 3.12 3.11 3.10) do (
+    if not defined PY (
+        py -%%V -c "import sys" >nul 2>&1 && set "PY=py -%%V"
+    )
+)
+if not defined PY (
+    python -c "import sys; sys.exit(0 if (3, 10) <= sys.version_info[:2] <= (3, 13) else 1)" >nul 2>&1 && set "PY=python"
+)
+if not defined PY (
+    echo [ERROR] No Python between 3.10 and 3.13 was found.
     echo(
-    echo   Install Python 3.10 to 3.13 from:
+    echo   Install Python 3.13 from:
     echo       https://www.python.org/downloads/windows/
-    echo   IMPORTANT: on the first install screen, tick
-    echo       "Add python.exe to PATH"
-    echo   Then run this setup again.
+    echo   Other versions can stay installed. Then run this setup again.
     echo(
     pause
     exit /b 1
 )
 
 echo Using this Python:
-python --version
-python -c "import sys; sys.exit(0 if (3, 10) <= sys.version_info[:2] <= (3, 13) else 1)"
-if errorlevel 1 (
-    echo [ERROR] This app needs Python 3.10 to 3.13.
-    echo   Install one from https://www.python.org/downloads/windows/
-    echo   and tick "Add python.exe to PATH", then run this setup again.
-    pause
-    exit /b 1
-)
+%PY% --version
 echo(
 
 REM --- 2. Create a virtual environment (.venv) ------------------
+REM  A .venv made earlier with an unsupported Python is replaced.
+if exist ".venv\Scripts\python.exe" (
+    ".venv\Scripts\python.exe" -c "import sys; sys.exit(0 if (3, 10) <= sys.version_info[:2] <= (3, 13) else 1)" >nul 2>&1
+    if errorlevel 1 (
+        echo The existing .venv uses an unsupported Python - recreating it.
+        rmdir /s /q ".venv"
+    )
+)
 if exist ".venv\Scripts\python.exe" (
     echo Virtual environment already exists ^(.venv^) - reusing it.
 ) else (
     echo Creating virtual environment in .venv ...
-    python -m venv .venv
+    %PY% -m venv .venv
     if errorlevel 1 (
         echo [ERROR] Could not create the virtual environment.
         pause
