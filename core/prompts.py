@@ -95,6 +95,66 @@ _PROMPTS = {
             "Usa apenas quando a pergunta indica um documento específico."
         ),
 
+        # Function-calling schema descriptions (tools/tools.py).
+        "fn_search_documents": "Pesquisa nos documentos do utilizador informação para responder à pergunta.",
+        "fn_search_documents_query": "O texto da pesquisa.",
+        "fn_retrieve_document_by_name": (
+            "Obtém um documento inteiro pelo nome do ficheiro. Usa quando o utilizador pede "
+            "especificamente um livro, relatório ou documento pelo nome."
+        ),
+        "fn_retrieve_document_by_name_document_name": (
+            "O nome do documento a obter (p. ex. 'relatorio_anual.pdf', 'dados.xlsx', 'notas.md')"
+        ),
+        "fn_list_available_documents": (
+            "Lista os documentos disponíveis no sistema. Usa quando o utilizador pergunta que documentos "
+            "existem. Pode filtrar por palavra-chave: se o utilizador pergunta por um tema específico "
+            "(p. ex. 'documentos sobre alometria'), usa o parâmetro filter_keyword para pesquisar os nomes dos documentos."
+        ),
+        "fn_list_available_documents_filter_keyword": (
+            "Palavra-chave opcional para filtrar os nomes dos documentos (p. ex. 'alometria', 'clima', "
+            "'política'). Deixa vazio para listar todos os documentos."
+        ),
+        "fn_search_wikipedia": "Pesquisa na Wikipédia informação enciclopédica sobre um tema.",
+        "fn_search_wikipedia_query": "O texto da pesquisa na Wikipédia.",
+        "fn_duckduckgo_search": (
+            "Pesquisa na web com o DuckDuckGo. Devolve 7 resultados com títulos, URLs e excertos. "
+            "Usa para atualidade ou conhecimento geral."
+        ),
+        "fn_duckduckgo_search_query": "O texto da pesquisa.",
+        "fn_fetch_url_content": (
+            "Obtém e extrai o texto principal de uma página web. Usa APENAS URLs devolvidos por um resultado "
+            "anterior de duckduckgo_search ou search_wikipedia. NUNCA inventes, adivinhes ou construas URLs. "
+            "NUNCA obtenhas URLs do YouTube. NUNCA obtenhas URLs de PDFs."
+        ),
+        "fn_fetch_url_content_url": "O URL completo a obter.",
+        "fn_fetch_url_content_max_chars": "Número máximo de caracteres a devolver (por omissão 5000).",
+        "fn_query_database": (
+            "Executa uma consulta SQL só de leitura numa base de dados configurada. São permitidas instruções "
+            "SELECT e CTEs (WITH ... SELECT); funções de janela, subconsultas e joins são suportados."
+        ),
+        "fn_query_database_db_name": (
+            "O nome da base de dados a consultar (usa list_databases para ver as opções disponíveis)."
+        ),
+        "fn_query_database_sql_query": (
+            "A consulta SQL a executar. Tem de ser só de leitura: uma instrução SELECT, opcionalmente "
+            "começada por uma cláusula WITH (CTE)."
+        ),
+        "fn_list_databases": "Lista todas as bases de dados SQL disponíveis para consulta.",
+        "fn_get_database_schema": (
+            "Obtém o esquema (tabelas e colunas) de uma base de dados. Usa para perceber a estrutura "
+            "da base de dados antes de escrever consultas."
+        ),
+        "fn_get_database_schema_db_name": "O nome da base de dados cujo esquema queres obter.",
+        "fn_activate_advanced_research": (
+            "Ativa a pesquisa avançada em vários passos para perguntas complexas que exigem análise "
+            "aprofundada, pesquisa em várias fontes, planeamento e síntese. Recorre aos documentos locais "
+            "(search_documents, list_available_documents, retrieve_document_by_name) e à web "
+            "(duckduckgo_search + fetch_url_content). Usa para perguntas com várias vertentes, cruzamento "
+            "de fontes, raciocínio passo a passo ou análise abrangente. NÃO uses para perguntas factuais "
+            "simples a que se responde diretamente."
+        ),
+        "fn_activate_advanced_research_query": "A pergunta ou tarefa complexa sobre a qual raciocinar.",
+
         "planner_system": """{datetime}
 
 És um assistente de planeamento de pesquisa. Decompõe as perguntas em sub-objetivos, cada um atribuído a UMA ferramenta.
@@ -273,6 +333,66 @@ Reescreve com palavras-chave diferentes e, se fizer sentido, outra ferramenta. R
             'description = the EXACT document filename (e.g. "report.pdf"). '
             "Use only when a specific document is named in the query."
         ),
+
+        # Function-calling schema descriptions (tools/tools.py).
+        "fn_search_documents": "Searches user's documents for information to respond to the user's query.",
+        "fn_search_documents_query": "The search query string.",
+        "fn_retrieve_document_by_name": (
+            "Retrieve an entire document by its filename. Use when user specifically asks for a "
+            "particular book, report, or document by name."
+        ),
+        "fn_retrieve_document_by_name_document_name": (
+            "The name of the document to retrieve (e.g., 'annual_report.pdf', 'data.xlsx', 'notes.md')"
+        ),
+        "fn_list_available_documents": (
+            "List available documents in the system. Use when user asks what documents are available. "
+            "Can filter by keyword - if user asks about specific topics (e.g., 'documents about allometric'), "
+            "use the filter_keyword parameter to search document names."
+        ),
+        "fn_list_available_documents_filter_keyword": (
+            "Optional keyword to filter document names (e.g., 'allometric', 'climate', 'policy'). "
+            "Leave empty to list all documents."
+        ),
+        "fn_search_wikipedia": "Searches Wikipedia for encyclopedic information on a given topic.",
+        "fn_search_wikipedia_query": "The search query string for Wikipedia.",
+        "fn_duckduckgo_search": (
+            "Search the web using DuckDuckGo. Returns 7 results with titles, URLs, and snippets. "
+            "Use for current events or general knowledge."
+        ),
+        "fn_duckduckgo_search_query": "The search query",
+        "fn_fetch_url_content": (
+            "Fetch and extract the main text content from a web page. ONLY use URLs that were returned "
+            "by a prior duckduckgo_search or search_wikipedia result. NEVER invent, guess, or construct URLs. "
+            "NEVER fetch YouTube URLs. NEVER fetch PDF URLs."
+        ),
+        "fn_fetch_url_content_url": "The full URL to fetch",
+        "fn_fetch_url_content_max_chars": "Max characters to return (default 5000)",
+        "fn_query_database": (
+            "Execute a read-only SQL query on a configured database. SELECT statements and CTEs "
+            "(WITH ... SELECT) are allowed; window functions, subqueries and joins are supported."
+        ),
+        "fn_query_database_db_name": (
+            "The name of the database to query (use list_databases to see available options)"
+        ),
+        "fn_query_database_sql_query": (
+            "The SQL query to execute. Must be read-only: a SELECT statement, optionally starting "
+            "with a WITH clause (CTE)."
+        ),
+        "fn_list_databases": "List all SQL databases available for querying.",
+        "fn_get_database_schema": (
+            "Get the schema (tables and columns) of a database. Use this to understand the database "
+            "structure before writing queries."
+        ),
+        "fn_get_database_schema_db_name": "The name of the database to get the schema for",
+        "fn_activate_advanced_research": (
+            "Activate advanced multi-step research for complex questions that require "
+            "deep analysis, multi-source research, planning, and synthesis. Draws on both "
+            "the local document corpus (search_documents, list_available_documents, "
+            "retrieve_document_by_name) and the open web (duckduckgo_search + fetch_url_content). "
+            "Use for multi-faceted questions, cross-referencing sources, step-by-step reasoning, "
+            "or comprehensive analysis. Do NOT use for simple factual questions answerable directly."
+        ),
+        "fn_activate_advanced_research_query": "The complex question or task to reason about.",
 
         "planner_system": """{datetime}
 

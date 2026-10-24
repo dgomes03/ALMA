@@ -1,8 +1,10 @@
 """
 Tool definitions for the RAG Framework.
-Centralizes all tool schemas to avoid duplication.
+Centralizes all tool schemas to avoid duplication. Descriptions come from
+core/prompts.py so they follow PROMPT_LANGUAGE.
 """
 
+from core import prompts
 from core.config import ADVANCED_RESEARCH
 
 
@@ -16,13 +18,13 @@ def get_tools_for_standard_generator():
                 "type": "function",
                 "function": {
                     "name": "search_documents",
-                    "description": "Searches user's documents for information to respond to the user's query.",
+                    "description": prompts.get("fn_search_documents"),
                     "parameters": {
                         "type": "object",
                         "properties": {
                             "query": {
                                 "type": "string",
-                                "description": "The search query string."
+                                "description": prompts.get("fn_search_documents_query")
                             }
                         },
                         "required": ["query"]
@@ -33,13 +35,13 @@ def get_tools_for_standard_generator():
                 "type": "function",
                 "function": {
                     "name": "retrieve_document_by_name",
-                    "description": "Retrieve an entire document by its filename. Use when user specifically asks for a particular book, report, or document by name.",
+                    "description": prompts.get("fn_retrieve_document_by_name"),
                     "parameters": {
                         "type": "object",
                         "properties": {
                             "document_name": {
                                 "type": "string",
-                                "description": "The name of the document to retrieve (e.g., 'annual_report.pdf', 'data.xlsx', 'notes.md')"
+                                "description": prompts.get("fn_retrieve_document_by_name_document_name")
                             }
                         },
                         "required": ["document_name"]
@@ -50,13 +52,13 @@ def get_tools_for_standard_generator():
                 "type": "function",
                 "function": {
                     "name": "list_available_documents",
-                    "description": "List available documents in the system. Use when user asks what documents are available. Can filter by keyword - if user asks about specific topics (e.g., 'documents about allometric'), use the filter_keyword parameter to search document names.",
+                    "description": prompts.get("fn_list_available_documents"),
                     "parameters": {
                         "type": "object",
                         "properties": {
                             "filter_keyword": {
                                 "type": "string",
-                                "description": "Optional keyword to filter document names (e.g., 'allometric', 'climate', 'policy'). Leave empty to list all documents."
+                                "description": prompts.get("fn_list_available_documents_filter_keyword")
                             }
                         }
                     }
@@ -66,11 +68,11 @@ def get_tools_for_standard_generator():
                 "type": "function",
                 "function": {
                     "name": "search_wikipedia",
-                    "description": "Searches Wikipedia for encyclopedic information on a given topic.",
+                    "description": prompts.get("fn_search_wikipedia"),
                     "parameters": {
                         "type": "object",
                         "properties": {
-                            "query": {"type": "string", "description": "The search query string for Wikipedia."}
+                            "query": {"type": "string", "description": prompts.get("fn_search_wikipedia_query")}
                         },
                         "required": ["query"]
                     }
@@ -80,11 +82,11 @@ def get_tools_for_standard_generator():
                 "type": "function",
                 "function": {
                     "name": "duckduckgo_search",
-                    "description": "Search the web using DuckDuckGo. Returns 7 results with titles, URLs, and snippets. Use for current events or general knowledge.",
+                    "description": prompts.get("fn_duckduckgo_search"),
                     "parameters": {
                         "type": "object",
                         "properties": {
-                            "query": {"type": "string", "description": "The search query"}
+                            "query": {"type": "string", "description": prompts.get("fn_duckduckgo_search_query")}
                         },
                         "required": ["query"]
                     }
@@ -94,12 +96,12 @@ def get_tools_for_standard_generator():
                 "type": "function",
                 "function": {
                     "name": "fetch_url_content",
-                    "description": "Fetch and extract the main text content from a web page. ONLY use URLs that were returned by a prior duckduckgo_search or search_wikipedia result. NEVER invent, guess, or construct URLs. NEVER fetch YouTube URLs. NEVER fetch PDF URLs.",
+                    "description": prompts.get("fn_fetch_url_content"),
                     "parameters": {
                         "type": "object",
                         "properties": {
-                            "url": {"type": "string", "description": "The full URL to fetch"},
-                            "max_chars": {"type": "integer", "description": "Max characters to return (default 5000)", "default": 5000}
+                            "url": {"type": "string", "description": prompts.get("fn_fetch_url_content_url")},
+                            "max_chars": {"type": "integer", "description": prompts.get("fn_fetch_url_content_max_chars"), "default": 5000}
                         },
                         "required": ["url"]
                     }
@@ -109,17 +111,17 @@ def get_tools_for_standard_generator():
                 "type": "function",
                 "function": {
                     "name": "query_database",
-                    "description": "Execute a read-only SQL query on a configured database. SELECT statements and CTEs (WITH ... SELECT) are allowed; window functions, subqueries and joins are supported.",
+                    "description": prompts.get("fn_query_database"),
                     "parameters": {
                         "type": "object",
                         "properties": {
                             "db_name": {
                                 "type": "string",
-                                "description": "The name of the database to query (use list_databases to see available options)"
+                                "description": prompts.get("fn_query_database_db_name")
                             },
                             "sql_query": {
                                 "type": "string",
-                                "description": "The SQL query to execute. Must be read-only: a SELECT statement, optionally starting with a WITH clause (CTE)."
+                                "description": prompts.get("fn_query_database_sql_query")
                             }
                         },
                         "required": ["db_name", "sql_query"]
@@ -130,7 +132,7 @@ def get_tools_for_standard_generator():
                 "type": "function",
                 "function": {
                     "name": "list_databases",
-                    "description": "List all SQL databases available for querying.",
+                    "description": prompts.get("fn_list_databases"),
                     "parameters": {
                         "type": "object",
                         "properties": {}
@@ -141,13 +143,13 @@ def get_tools_for_standard_generator():
                 "type": "function",
                 "function": {
                     "name": "get_database_schema",
-                    "description": "Get the schema (tables and columns) of a database. Use this to understand the database structure before writing queries.",
+                    "description": prompts.get("fn_get_database_schema"),
                     "parameters": {
                         "type": "object",
                         "properties": {
                             "db_name": {
                                 "type": "string",
-                                "description": "The name of the database to get the schema for"
+                                "description": prompts.get("fn_get_database_schema_db_name")
                             }
                         },
                         "required": ["db_name"]
@@ -161,20 +163,13 @@ def get_tools_for_standard_generator():
             "type": "function",
             "function": {
                 "name": "activate_advanced_research",
-                "description": (
-                    "Activate advanced multi-step research for complex questions that require "
-                    "deep analysis, multi-source research, planning, and synthesis. Draws on both "
-                    "the local document corpus (search_documents, list_available_documents, "
-                    "retrieve_document_by_name) and the open web (duckduckgo_search + fetch_url_content). "
-                    "Use for multi-faceted questions, cross-referencing sources, step-by-step reasoning, "
-                    "or comprehensive analysis. Do NOT use for simple factual questions answerable directly."
-                ),
+                "description": prompts.get("fn_activate_advanced_research"),
                 "parameters": {
                     "type": "object",
                     "properties": {
                         "query": {
                             "type": "string",
-                            "description": "The complex question or task to reason about."
+                            "description": prompts.get("fn_activate_advanced_research_query")
                         }
                     },
                     "required": ["query"]
