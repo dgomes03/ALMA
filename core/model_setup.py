@@ -29,14 +29,14 @@ class ModelChoice:
 CHOICES = (
     ModelChoice("Ministral 3 3B", "mlx-community/Ministral-3-3B-Instruct-2512-4bit", 2.8,
                 "hf.co/lmstudio-community/Ministral-3-3B-Instruct-2512-GGUF:Q4_K_M", 2.1,
-                "For very simple, quick questions. Fast, but more likely to hallucinate. Works with 8 GB of memory."),
+                "For very simple, quick questions. Fast, but more likely to hallucinate. Works with 8 GB of graphics memory."),
     ModelChoice("Ministral 3 8B", "mlx-community/Ministral-3-8B-Instruct-2512-4bit", 5.6,
                 "hf.co/lmstudio-community/Ministral-3-8B-Instruct-2512-GGUF:Q4_K_M", 5.2,
-                "For questions of medium complexity. Handles more complex searches. Needs 16 GB of memory."),
+                "For questions of medium complexity. Handles more complex searches. Needs 16 GB of graphics memory."),
     ModelChoice("Ministral 3 14B", "mlx-community/Ministral-3-14B-Instruct-2512-4bit", 8.5,
                 "hf.co/lmstudio-community/Ministral-3-14B-Instruct-2512-GGUF:Q4_K_M", 8.2,
                 "The minimum recommended for an accurate RAG system with few hallucinations. Searches long "
-                "documents and reasons over them. Needs 16 to 24 GB of memory."),
+                "documents and reasons over them. Needs 16 to 24 GB of graphics memory."),
 )
 RECOMMENDED = 2          # the 14B, where the cursor starts
 
@@ -60,7 +60,8 @@ def _choose_download(backend):
     size = (lambda c: c.mlx_gb) if backend == "mlx" else (lambda c: c.ollama_gb)
     rows = [(c.name, f"{size(c):.1f} GB download") for c in CHOICES]
     header = ("No language model is installed yet. Choose one to download (4-bit).",
-              "You can switch later by adding other models to the model folder or in the settings menu.")
+              "You can switch later by adding other models to the model folder or in the settings menu.",
+              "Graphics memory is the graphics card's memory, not RAM. On Apple Silicon Macs it is the Mac's total memory.")
     index = pick("Choose a language model", rows, details=[c.best_for for c in CHOICES],
                  header=header, index=RECOMMENDED)
     if index is None:

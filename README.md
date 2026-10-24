@@ -28,9 +28,11 @@ You need Python 3.10 to 3.13.
 The setup script creates a virtual environment in `.venv`, installs the packages (about 2-3 GB) and lists what is left to do:
 
 1. **Language model.** On the first start ALMA looks in the `model` folder. If it's empty, it asks which Ministral 3 model (4-bit) to download.
-   - **3B** (2.8 GB). For very simple, quick questions. Fast, but more likely to hallucinate. Works with 8 GB of memory.
-   - **8B** (5.6 GB). For questions of medium complexity. Handles more complex searches. Needs 16 GB of memory.
-   - **14B** (8.5 GB). The minimum recommended for an accurate RAG system with few hallucinations. Searches long documents and reasons over them. Needs 16 to 24 GB of memory.
+   - **3B** (2.8 GB). For very simple, quick questions. Fast, but more likely to hallucinate. Works with 8 GB of graphics memory.
+   - **8B** (5.6 GB). For questions of medium complexity. Handles more complex searches. Needs 16 GB of graphics memory.
+   - **14B** (8.5 GB). The minimum recommended for an accurate RAG system with few hallucinations. Searches long documents and reasons over them. Needs 16 to 24 GB of graphics memory.
+
+   Graphics memory means the memory of the graphics card (VRAM), not the computer's RAM. On Apple Silicon Macs the two are shared, so it is the Mac's total memory. On a PC without enough graphics memory, Ollama runs the model on the processor and RAM instead, which works but is much slower.
 
    On Apple Silicon the model runs with MLX and downloads into `model/`. To use another MLX model, put its folder in `model/` (or set `MODEL_PATH`). Elsewhere ALMA uses [Ollama](https://ollama.com/download): install it and keep it running, and ALMA pulls the chosen model into it. To use a hosted model instead, see [API backend](#api-backend).
 2. **Documents.** Put the files you want to search in `documents/`. Supported: PDF, DOCX, PPTX, XLSX/XLS, HTML, Markdown, CSV, TXT and images (PNG, JPG, TIFF, BMP).
